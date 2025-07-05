@@ -48,6 +48,9 @@ namespace OxoBrowser.View
                 case GameTypeEnum.Touken:
                     ToukenRadio.IsChecked = true;
                     break;
+                case GameTypeEnum.EnStar:
+                    EnStarRadio.IsChecked = true;
+                    break;
             }
 
         }
@@ -71,6 +74,10 @@ namespace OxoBrowser.View
             else if ((bool)ToukenRadio.IsChecked)
             {
                 AppConfig.Instance.ConfigData.GameType = GameTypeEnum.Touken;
+            }
+            else if ((bool)EnStarRadio.IsChecked)
+            {
+                AppConfig.Instance.ConfigData.GameType = GameTypeEnum.EnStar;
             }
 
             MainWindow.Instance.ShowWebImage(false);

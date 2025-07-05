@@ -19,7 +19,8 @@ namespace Base
     public enum GameTypeEnum
     {
         KanColle = 0,
-        Touken
+        Touken,
+        EnStar
     }
 
     [AddINotifyPropertyChangedInterface]
@@ -41,6 +42,7 @@ namespace Base
             {
                 GameTypeEnum.KanColle => new Size(1200, 720),
                 GameTypeEnum.Touken => new Size(1136, 640),
+                GameTypeEnum.EnStar => new Size(960, 600),
                 _ => new Size(1200, 720),
             };
 
@@ -53,7 +55,9 @@ namespace Base
                 case GameTypeEnum.KanColle:
                     return "http://www.dmm.com/netgame/social/-/gadgets/=/app_id=854854/";
                 case GameTypeEnum.Touken:
-                    return "https://pc-play.games.dmm.com/play/tohken/";
+                    return "https://play.games.dmm.com/game/tohken";
+                case GameTypeEnum.EnStar:
+                    return "https://play.games.dmm.com/game/ensemble_stars";
             }
             return "";
 

@@ -41,6 +41,7 @@
                 <StackPanel Orientation="Vertical">
                     <RadioButton x:Name="KanColleRadio" Content="KanColle" />
                     <RadioButton x:Name="ToukenRadio" Content="Touken" />
+					<RadioButton x:Name="EnStarRadio" Content="EnStar" />
                 </StackPanel>
 
             </StackPanel>

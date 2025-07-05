@@ -67,6 +67,7 @@
                     <!--  Default to 100%  -->
                     <ComboBoxItem Content="KanColle" />
                     <ComboBoxItem Content="Touken" />
+					<ComboBoxItem Content="EnStar" />
                 </ComboBox>
 
 

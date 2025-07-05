@@ -314,6 +314,9 @@ namespace OxoBrowser.Wins
                     case GameTypeEnum.Touken:
                         WebViewConfig.GetToukenHtml5Core(chromeMain);
                         break;
+                    case GameTypeEnum.EnStar:
+                        WebViewConfig.GetEnStarHtml5Core(chromeMain);
+                        break;
                 }
                 
             }));
