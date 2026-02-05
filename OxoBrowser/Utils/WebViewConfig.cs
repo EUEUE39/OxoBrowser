@@ -168,147 +168,62 @@ namespace Base
             }
         }
 
-        public static void GetEnStarHtml5Core(CefSharp.Wpf.ChromiumWebBrowser browser)
+        private const string kEnsembleStarsCSS = """
+            html, body, iframe {overflow:hidden;margin:0;}
+            #game_frame {overflow: hidden !important; position: fixed; left: 0; top: 0; width: 100% !important; height: 100% !important; z-index:1;}
+            ul.area-menu {display: none;}
+            .dmm-ntgnavi {display: none;}
+            .contentWrap {padding: 0 !important;}
+            .gameArea-wrap {margin: 0 !important;}
+        """;
+
+        private static void InjectStyle(IFrame frame, string css)
         {
-            try
-            {
-                //var mainframe = GetFrameContainsUrl(browser, @"https://play.games.dmm.com/game/ensemble_stars");
-                if (browser.Address.StartsWith("https://play.games.dmm.com/game/ensemble_stars"))
-                {
-                    try
-                    {
-                        var gameframe = GetFrame(browser, "game_frame");
-                        Debug.WriteLine("尝试获取webgl_frame");
-                        if (gameframe != null)
-                        {
-                            string script = "document.body.style.overflow = 'hidden';";
-                            gameframe.ExecuteJavaScriptAsync(script);
-                            gameframe.ExecuteJavaScriptAsync(@"
-                                                const styles = `
-                                                    html, body, iframe {overflow:hidden;margin:0;}
-                                                    #game_frame {overflow: hidden !important; position: fixed; left: 0; top: 0; width: 100% !important; height: 100% !important; z-index:1;}
-                                                    ul.area-menu {display: none;}
-                                                    .dmm-ntgnavi {display: none;}
-                                                    .contentWrap {padding: 0 !important;}
-                                                    .gameArea-wrap {margin: 0 !important;}
-                                                    /*canvas#gameContainer,.gameArea-wrap {width: 1200px !important; height: 720px !important;}*/
-                                                `;
-                                                // 检查相同的样式
-                                                const existingStyles = document.getElementsByTagName('style');
-                                                //for (let i = 0; i < existingStyles.length; i++) {
-                                                //    if (existingStyles[i].innerHTML.includes(styles)) {
-                                                //        return;
-                                                //    }
-                                                //}
-
-                                                const styleNode = document.createElement('style');
-                                                styleNode.innerHTML = styles;
-                                                document.body.appendChild(styleNode);
-
-                                                //让iframe#wegbl_frame 的height指定为720p
-                                                //const iframe = document.getElementById('webgl_frame');
-                                                //iframe.height = '720'; // 或者 iframe.style.height = '720px';
-                                        ");
-                            Debug.WriteLine("执行js完成1");
-                        }
-                        else
-                        {
-                            Task.Run(async () => {
-
-                                await Task.Delay(40000);
-
-                                Dispatcher mainThreadDispatcher = Application.Current.Dispatcher;
-                                mainThreadDispatcher.Invoke(async () =>
-                                {
-                                    var gameframe = GetFrame(browser, "game_frame");
-                                    Debug.WriteLine("尝试获取game_frame");
-                                    if (gameframe != null)
-                                    {
-                                        string script = "document.body.style.overflow = 'hidden';";
-                                        gameframe.ExecuteJavaScriptAsync(script);
-                                        gameframe.ExecuteJavaScriptAsync(@"
-                                                const styles = `
-                                                    html, body, iframe {overflow:hidden;margin:0;}
-                                                    #game_frame {overflow: hidden !important; position: fixed; left: 0; top: 0; width: 100% !important; height: 100% !important; z-index:1;}
-                                                    ul.area-menu {display: none;}
-                                                    .dmm-ntgnavi {display: none;}
-                                                    .contentWrap {padding: 0 !important;}
-                                                    .gameArea-wrap {margin: 0 !important;}
-                                                    /*canvas#gameContainer,.gameArea-wrap {width: 1200px !important; height: 720px !important;}*/
-                                                `;
-                                                // 检查相同的样式
-                                                const existingStyles = document.getElementsByTagName('style');
-                                                //for (let i = 0; i < existingStyles.length; i++) {
-                                                //    if (existingStyles[i].innerHTML.includes(styles)) {
-                                                //        return;
-                                                //    }
-                                                //}
-
-                                                const styleNode = document.createElement('style');
-                                                styleNode.innerHTML = styles;
-                                                document.body.appendChild(styleNode);
-
-                                                //让iframe#wegbl_frame 的height指定为720p
-                                                //const iframe = document.getElementById('webgl_frame');
-                                                //iframe.height = '720'; // 或者 iframe.style.height = '720px';
-                                        ");
-                                        Debug.WriteLine("执行js完成2");
-                                    }
-                                });
-
-
-                            });
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-
-                    }
-
-                    browser.ExecuteScriptAsync(@"
-                    (function() {
-                            const styles = `
-                                html, body, iframe {overflow:hidden;margin:0;}
-                                #game_frame {overflow: hidden !important; position: fixed; left: 0; top: 0; width: 100% !important; height: 100% !important; z-index:1;}
-                                ul.area-menu {display: none;}
-                                .dmm-ntgnavi {display: none;}
-                                .contentWrap {padding: 0 !important;}
-                                .gameArea-wrap {margin: 0 !important;}
-                                /*canvas#gameContainer,.gameArea-wrap {width: 1200px !important; height: 720px !important;}*/
-                            `;
-
-                            // 检查相同的样式
-                            const existingStyles = document.getElementsByTagName('style');
-                            for (let i = 0; i < existingStyles.length; i++) {
-                                if (existingStyles[i].innerHTML.includes(styles)) {
-                                    return;
-                                }
-                            }
-
-                            const styleNode = document.createElement('style');
-                            styleNode.innerHTML = styles;
-                            document.body.appendChild(styleNode);
-
-                            //让iframe#wegbl_frame 的height指定为720p
-                            //const iframe = document.getElementById('game_frame');
-                            //const iframeDocument = iframe.contentDocument || iframe.contentWindow.document;
-                            //const iframeElement = iframeDocument.getElementById('targetElement');
-                            //iframe.onload = function(){
-                            //    iframeDocument.body.appendChild(styleNode);
-                            //}
-
-                        })();
-                    ");
-
-                }
-
-            }
-            catch (Exception ex)
-            {
-                EasyLog.Write(ex.ToString());
-            }
-            Debug.WriteLine("结束修改窗体");
+            var script = $@"
+                var style = document.createElement('style');
+                style.type = 'text/css';
+                style.innerHTML = `{css}`;
+                document.head.appendChild(style);
+            ";
+            frame.ExecuteJavaScriptAsync(script);
         }
+
+        public static async void GetEnStarHtml5Core(CefSharp.Wpf.ChromiumWebBrowser browser)
+        {
+            if (!browser.Address.StartsWith("https://play.games.dmm.com/game/ensemble_stars"))
+                return;
+
+            IFrame gameFrame = null;
+            for (int i = 0; i < 40; i++) // 20 seconds timeout
+            {
+                gameFrame = GetFrame(browser, "game_frame");
+                if (gameFrame != null)
+                {
+                    Debug.WriteLine("game_frame found.");
+                    break;
+                }
+                await Task.Delay(500);
+            }
+
+            if (gameFrame == null)
+            {
+                Debug.WriteLine("Timed out waiting for game_frame.");
+                return;
+            }
+            
+            InjectStyle(gameFrame, kEnsembleStarsCSS);
+            
+            // Also apply styles to the main frame to hide DMM navigation
+            browser.ExecuteScriptAsync($@"
+                var style = document.createElement('style');
+                style.type = 'text/css';
+                style.innerHTML = `{kEnsembleStarsCSS}`;
+                document.head.appendChild(style);
+            ");
+
+            Debug.WriteLine("Ensemble Stars styles injected.");
+        }
+
 
 
         public void ApplyStyleSheet(FrameLoadEndEventArgs e = null)

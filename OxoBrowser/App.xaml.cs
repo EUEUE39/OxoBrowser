@@ -80,7 +80,7 @@ namespace OxoBrowser
             //setting.CefCommandLineArgs.Add("--no-proxy-server", "1");
 
             //硬件加速设置
-            //setting.CefCommandLineArgs.Add("--enable-media-stream", "1");
+            setting.CefCommandLineArgs.Add("--enable-media-stream", "1");
             //setting.CefCommandLineArgs.Add("disable-gpu", "0");
             //setting.SetOffScreenRenderingBestPerformanceArgs();
             //setting.CefCommandLineArgs.Add("disable-gpu", "1");
